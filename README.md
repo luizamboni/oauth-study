@@ -34,6 +34,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 - `make api-env` — create `api/.env` from the example file
 - `make api-run` — run the protected API on port 4000
 - `make api-call` — call the protected API with a Bearer token
+- `make api-call-writer` — POST to the writer-only metrics endpoint
 - `make reset` — tear down Keycloak/Postgres volumes, restart, and reapply service-account roles
 - `make login` — open the Keycloak login page for the `oauth-study` realm in your browser
 - `make down` — stop containers
@@ -104,13 +105,16 @@ The `api/` directory exposes an Express API that validates Bearer tokens issued 
    The server listens on http://localhost:4000 and exposes:
    - `GET /healthz` — unauthenticated health check
    - `GET /api/hello` — requires a valid access token and (by default) the `service.reader` role
+   - `POST /api/metrics` — requires the `service.writer` role (provided to new users by default)
 3. Hit the protected route:
    - Authorization Code flow: tokens retrieved via the sample app automatically trigger a call, and results appear on the home page.
    - Client Credentials flow: `make token` prints both the token response and the protected API output.
-   - Manual check: provide a token with `TOKEN=<ACCESS_TOKEN> make api-call`.
+   - Manual checks:
+     - `TOKEN=<ACCESS_TOKEN> make api-call` for the reader endpoint
+     - `TOKEN=<ACCESS_TOKEN> make api-call-writer` for the writer endpoint
 
 > ℹ️ `make reset` tears down the Keycloak/Postgres stack, reloads the realm, and re-applies the `service.reader` role mapping to the `confidential-cli` service account so client-credential calls stay authorized.
 
-> ℹ️ New self-registered users now inherit the `service.reader` role by default. If you already created accounts before this change, assign the role manually or run `make reset` and re-create them.
+> ℹ️ New self-registered users now inherit the `service.reader` and `service.writer` roles by default. If you already created accounts before this change, assign the roles manually or run `make reset` and re-create them.
 
 > ℹ️ The `demo` user has the `service.reader` realm role pre-assigned. If you prefer to call the API with the `confidential-cli` service account instead, grant that role to the client’s service account in Keycloak or relax `REQUIRED_ROLE` in `api/.env`.

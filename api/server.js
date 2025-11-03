@@ -14,13 +14,53 @@ const ISSUER = `${KEYCLOAK_URL}/realms/${REALM}`;
 const JWKS_URL = new URL(`${ISSUER}/protocol/openid-connect/certs`);
 const JWKS = createRemoteJWKSet(JWKS_URL);
 
+function authenticateToken(requiredRole = REQUIRED_ROLE) {
+  return async function middleware(req, res, next) {
+    const header = req.headers.authorization || '';
+    const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+    if (!token) {
+      return res.status(401).json({ error: 'Missing Authorization header' });
+    }
+
+    try {
+      const verified = await jwtVerify(token, JWKS, {
+        issuer: ISSUER,
+        audience: AUDIENCE || undefined
+      });
+      const roles = extractRoles(verified.payload);
+      if (requiredRole && !roles.includes(requiredRole)) {
+        return res.status(403).json({
+          error: `Missing required role: ${requiredRole}`
+        });
+      }
+      req.auth = {
+        token,
+        payload: verified.payload,
+        roles
+      };
+      next();
+    } catch (error) {
+      console.error('Token verification failed', error.message);
+      res.status(401).json({ error: 'Invalid or expired token' });
+    }
+  };
+}
+
+function extractRoles(payload) {
+  const realmRoles = payload.realm_access?.roles || [];
+  const resourceRoles = Object.values(payload.resource_access || {}).flatMap(
+    resource => resource.roles || []
+  );
+  return [...new Set([...realmRoles, ...resourceRoles])];
+}
+
 const app = express();
 
 app.get('/healthz', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.get('/api/hello', authenticateToken, (req, res) => {
+app.get('/api/hello', authenticateToken(), (req, res) => {
   const { payload, roles } = req.auth;
   res.json({
     message: 'Hello from the protected API!',
@@ -28,6 +68,15 @@ app.get('/api/hello', authenticateToken, (req, res) => {
     roles,
     issued_at: payload.iat,
     expires_at: payload.exp
+  });
+});
+
+app.post('/api/metrics', authenticateToken('service.writer'), (req, res) => {
+  const { payload } = req.auth;
+  res.json({
+    message: 'Metrics update accepted',
+    subject: payload.sub,
+    accepted_at: Date.now()
   });
 });
 
@@ -39,41 +88,3 @@ app.use((err, _req, res, _next) => {
 app.listen(PORT, () => {
   console.log(`Protected API listening on http://localhost:${PORT}`);
 });
-
-async function authenticateToken(req, res, next) {
-  const header = req.headers.authorization || '';
-  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
-  if (!token) {
-    return res.status(401).json({ error: 'Missing Authorization header' });
-  }
-
-  try {
-    const verified = await jwtVerify(token, JWKS, {
-      issuer: ISSUER,
-      audience: AUDIENCE || undefined
-    });
-    const roles = extractRoles(verified.payload);
-    if (REQUIRED_ROLE && !roles.includes(REQUIRED_ROLE)) {
-      return res.status(403).json({
-        error: `Missing required role: ${REQUIRED_ROLE}`
-      });
-    }
-    req.auth = {
-      token,
-      payload: verified.payload,
-      roles
-    };
-    next();
-  } catch (error) {
-    console.error('Token verification failed', error.message);
-    res.status(401).json({ error: 'Invalid or expired token' });
-  }
-}
-
-function extractRoles(payload) {
-  const realmRoles = payload.realm_access?.roles || [];
-  const resourceRoles = Object.values(payload.resource_access || {}).flatMap(
-    resource => resource.roles || []
-  );
-  return [...new Set([...realmRoles, ...resourceRoles])];
-}

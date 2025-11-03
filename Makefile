@@ -1,4 +1,4 @@
-.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call reset login
+.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call api-call-writer reset login
 
 # Start Keycloak playground in detached mode
 up:
@@ -44,6 +44,11 @@ api-env:
 api-call:
 	@test -n "$(TOKEN)" || (echo "Usage: TOKEN=... make api-call" && exit 1)
 	curl -s -H "Authorization: Bearer $(TOKEN)" http://localhost:4000/api/hello | jq
+
+# Call writer-protected API (requires TOKEN with service.writer role)
+api-call-writer:
+	@test -n "$(TOKEN)" || (echo "Usage: TOKEN=... make api-call-writer" && exit 1)
+	curl -s -X POST -H "Authorization: Bearer $(TOKEN)" http://localhost:4000/api/metrics | jq
 
 # Reset environment (stop, remove volumes, fresh start)
 reset:
