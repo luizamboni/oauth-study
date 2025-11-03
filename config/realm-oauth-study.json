@@ -83,12 +83,12 @@
         "profile",
         "email",
         "roles",
-        "web-origins"
+        "web-origins",
+        "service-audit"
       ],
       "optionalClientScopes": [
         "address",
-        "phone",
-        "service-audit"
+        "phone"
       ]
     }
   ],
