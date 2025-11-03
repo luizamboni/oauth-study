@@ -61,6 +61,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 <p align="center">
   <img src="docs/sequence-diagram-auth-code.svg" alt="Authorization Code + PKCE Flow" width="90%">
 </p>
+<p align="center"><em>PKCE (Proof Key for Code Exchange) lets public clients prove they are the ones that initiated the login by pairing the authorization code with a one-time code verifier. The client sends a hash (code challenge) during the redirect, then redeems the code with the original verifier so intercepted codes can’t be abused.</em></p>
 
 1. Sign in to the Keycloak admin console and select the `oauth-study` realm.
 2. Copy the client ID `public-pkce-client`.
