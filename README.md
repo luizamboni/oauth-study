@@ -78,10 +78,13 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
    - Redirect URI: `http://localhost:8000/callback` (must match exactly)
    - PKCE method: `S256`
 4. When prompted, sign in with user `demo` / `demo`.
+5. Keycloak now shows a consent screen listing `profile`, `email`, `roles`, `web-origins`, and the optional `service-audit` scope. Review the requested access and click **Accept** to continue.
    - Need a fresh user? Click **Register** on the Keycloak login screen—self-service sign-up is enabled and skips email verification in this local setup.
-5. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.  
+6. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.  
    The home screen automatically calls the protected API with your access token and shows the response.
-6. The sample app requests the optional `service-audit` scope (via `AUTH_SCOPE`), so decoded tokens include an `audit_roles` claim alongside the standard `roles` list.
+7. The sample app requests the optional `service-audit` scope (via `AUTH_SCOPE`), so decoded tokens include an `audit_roles` claim alongside the standard `roles` list.
+
+> ℹ️ Want to see the consent dialog again? Visit `make login`, open **Applications** in the Keycloak account console, and revoke access for “Public PKCE Client”. The next Authorization Code flow will re-prompt for the same scopes.
 
 ### Client Credentials (Confidential Client)
 <p align="center">
