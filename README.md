@@ -34,6 +34,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 - `make api-env` — create `api/.env` from the example file
 - `make api-run` — run the protected API on port 4000
 - `make api-call` — call the protected API with a Bearer token
+- `make reset` — tear down Keycloak/Postgres volumes, restart, and reapply service-account roles
 - `make down` — stop containers
 - `make clean` — stop containers and remove volumes
 
@@ -105,5 +106,7 @@ The `api/` directory exposes an Express API that validates Bearer tokens issued 
    - Authorization Code flow: tokens retrieved via the sample app automatically trigger a call, and results appear on the home page.
    - Client Credentials flow: `make token` prints both the token response and the protected API output.
    - Manual check: provide a token with `TOKEN=<ACCESS_TOKEN> make api-call`.
+
+> ℹ️ `make reset` tears down the Keycloak/Postgres stack, reloads the realm, and re-applies the `service.reader` role mapping to the `confidential-cli` service account so client-credential calls stay authorized.
 
 > ℹ️ The `demo` user has the `service.reader` realm role pre-assigned. If you prefer to call the API with the `confidential-cli` service account instead, grant that role to the client’s service account in Keycloak or relax `REQUIRED_ROLE` in `api/.env`.

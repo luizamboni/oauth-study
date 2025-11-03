@@ -49,6 +49,7 @@ api-call:
 reset:
 	docker compose down -v
 	docker compose up -d
+	./scripts/grant-service-account-role.sh
 
 # Stop containers and remove persistent volumes
 clean:
