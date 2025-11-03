@@ -1,4 +1,4 @@
-.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call
+.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call reset
 
 # Start Keycloak playground in detached mode
 up:
@@ -44,6 +44,11 @@ api-env:
 api-call:
 	@test -n "$(TOKEN)" || (echo "Usage: TOKEN=... make api-call" && exit 1)
 	curl -s -H "Authorization: Bearer $(TOKEN)" http://localhost:4000/api/hello | jq
+
+# Reset environment (stop, remove volumes, fresh start)
+reset:
+	docker compose down -v
+	docker compose up -d
 
 # Stop containers and remove persistent volumes
 clean:
