@@ -37,6 +37,8 @@ app.use(
   })
 );
 
+app.use(express.urlencoded({ extended: false }));
+
 let clientPromise;
 
 async function getOidcClient() {
@@ -57,7 +59,7 @@ async function getOidcClient() {
 app.get('/', async (req, res) => {
   if (req.session.tokenSet) {
     const { access_token: accessToken, id_token: idToken } = req.session.tokenSet;
-    const apiResult = await callProtectedApi(accessToken);
+    const apiResult = req.session.apiResult;
     res.send(`
       <main>
         <h1>OAuth Study App</h1>
@@ -69,8 +71,11 @@ app.get('/', async (req, res) => {
           <h3>ID Token</h3>
           <pre>${idToken ? JSON.stringify(parseJwt(idToken), null, 2) : 'Unavailable'}</pre>
           <h3>Protected API Response (${PROTECTED_API_URL})</h3>
-          <pre>${JSON.stringify(apiResult, null, 2)}</pre>
+          ${apiResult ? `<pre>${JSON.stringify(apiResult, null, 2)}</pre>` : '<p>No response yet. Click the button below to call the protected API.</p>'}
         </section>
+        <form method="post" action="/call-protected">
+          <button type="submit">Call Protected API</button>
+        </form>
         <p><a href="/logout">Log out</a></p>
       </main>
     `);
@@ -138,6 +143,7 @@ app.get('/callback', async (req, res, next) => {
       refresh_token: tokenSet.refresh_token,
       expires_at: tokenSet.expires_at
     };
+    req.session.apiResult = null;
 
     res.redirect('/');
   } catch (err) {
@@ -155,6 +161,19 @@ app.get('/logout', async (req, res, next) => {
     req.session.destroy(() => {
       res.redirect(endSessionUrl);
     });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/call-protected', async (req, res, next) => {
+  try {
+    if (!req.session.tokenSet?.access_token) {
+      return res.redirect('/');
+    }
+    const result = await callProtectedApi(req.session.tokenSet.access_token);
+    req.session.apiResult = result;
+    res.redirect('/');
   } catch (err) {
     next(err);
   }

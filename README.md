@@ -30,7 +30,6 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 - `make token` — request a client credentials token
 - `make app-install` — install the sample app dependencies
 - `make app-run` — run the sample app on port 3000
-- `make app-flow` — execute the Authorization Code + PKCE flow via CLI and call the protected API
 - `make api-install` — install the protected API dependencies
 - `make api-env` — create `api/.env` from the example file
 - `make api-run` — run the protected API on port 4000
@@ -79,9 +78,6 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 4. When prompted, sign in with user `demo` / `demo`.
 5. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.  
    The home screen automatically calls the protected API with your access token and shows the response.
-6. Optionally automate the flow from the CLI:
-   - `make app-flow` uses the demo credentials to perform the Authorization Code + PKCE exchange and immediately call the protected API.  
-     Override with `OIDC_USERNAME`, `OIDC_PASSWORD`, or `PROTECTED_API_URL` as needed.
 
 ### Client Credentials (Confidential Client)
 <p align="center">
