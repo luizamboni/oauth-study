@@ -2,7 +2,12 @@
 
 Local playground for experimenting with OAuth 2.0 and OpenID Connect using [Keycloak](https://www.keycloak.org/) running in Docker.
 
-![Authorization Code PKCE Flow](docs/sequence-diagram.svg)
+<p align="center">
+  <img src="docs/sequence-diagram-auth-code.svg" alt="Authorization Code + PKCE Flow" width="70%">
+</p>
+<p align="center">
+  <img src="docs/sequence-diagram-client-credentials.svg" alt="Client Credentials Flow" width="70%">
+</p>
 
 ## Prerequisites
 - Docker Engine 24+
