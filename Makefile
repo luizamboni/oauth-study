@@ -63,3 +63,6 @@ login:
 # Stop containers and remove persistent volumes
 clean:
 	docker compose down -v
+
+codex:
+	codex resume 019a4a04-8910-72b2-a1fc-b56d507d4966
