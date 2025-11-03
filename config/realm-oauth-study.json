@@ -144,6 +144,7 @@
   "defaultRoles": [
     "offline_access",
     "uma_authorization",
-    "service.reader"
+    "service.reader",
+    "service.writer"
   ]
 }
