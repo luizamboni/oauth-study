@@ -23,17 +23,6 @@ Local playground for experimenting with OAuth 2.0 and OpenID Connect using [Keyc
 
 The realm `oauth-study` is auto-imported with example clients, roles, and a demo user.
 
-### Using the Authorization Code + PKCE Flow
-
-<p align="center">
-  <img src="docs/sequence-diagram-auth-code.svg" alt="Authorization Code + PKCE Flow" width="90%">
-</p>
-
-### Using the Client Credentials Flow
-
-<p align="center">
-  <img src="docs/sequence-diagram-client-credentials.svg" alt="Client Credentials Flow" width="90%">
-</p>
 
 ### Makefile Shortcuts
 - `make up` — start the stack
@@ -64,6 +53,11 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 ## Try OAuth Flows
 
 ### Authorization Code + PKCE (Public Client)
+
+<p align="center">
+  <img src="docs/sequence-diagram-auth-code.svg" alt="Authorization Code + PKCE Flow" width="90%">
+</p>
+
 1. Sign in to the Keycloak admin console and select the `oauth-study` realm.
 2. Copy the client ID `public-pkce-client`.
 3. Use an OAuth debugger (e.g. https://oidcdebugger.com) or your own local client to initiate the Authorization Code flow.
@@ -75,23 +69,16 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 5. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.
 
 ### Client Credentials (Confidential Client)
+<p align="center">
+  <img src="docs/sequence-diagram-client-credentials.svg" alt="Client Credentials Flow" width="90%">
+</p>
+
 Use the helper script to request a token using the `confidential-cli` client:
 ```bash
-./scripts/request-client-credentials-token.sh
+make token
 ```
 The script POSTs to the token endpoint and pretty-prints the JSON response. You can supply a different client ID/secret and override the realm or Keycloak URL via environment variables:
-```bash
-REALM=oauth-study \
-KEYCLOAK_URL=http://localhost:8080 \
-./scripts/request-client-credentials-token.sh my-client my-secret
-```
 
 ### Password Grant (Optional)
 Direct Access Grants are disabled by default for security. You can enable them on a client by editing the client configuration in the admin console.
 
-## Troubleshooting
-- **Keycloak fails to connect to Postgres:** ensure the `postgres` container is running and healthy (`docker compose ps`).
-- **Cannot log in to admin console:** wait for the server to finish booting; initial migrations can take ~30 seconds.
-- **Realm not visible:** check the Keycloak logs — if the import failed, restart the stack (`docker compose restart keycloak`).
-
-Happy experimenting!
