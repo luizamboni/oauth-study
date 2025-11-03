@@ -35,6 +35,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 
 ## Sample Realm Contents
 
+### General Data
 | Item | Details |
 | --- | --- |
 | Realm | `oauth-study` |
@@ -42,6 +43,8 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 | Clients | - `public-pkce-client` — public client, Authorization Code + PKCE, redirect URIs `http://localhost:3000/*`, `http://localhost:8000/callback`<br>- `confidential-cli` — confidential client, Client Credentials, secret `confidential-cli-secret` |
 | Realm roles | `service.reader`, `service.writer` |
 
+
+### Client's Data
 | Property | `public-pkce-client` | `confidential-cli` |
 | --- | --- | --- |
 | Client type | - Public OAuth client<br>- SPA/native-style flow<br>- Authorization Code + PKCE | - Confidential OAuth client<br>- CLI/service-to-service<br>- Client Credentials grant |
