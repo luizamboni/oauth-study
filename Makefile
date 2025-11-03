@@ -1,4 +1,4 @@
-.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call reset
+.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call reset app-flow
 
 # Start Keycloak playground in detached mode
 up:
@@ -50,6 +50,10 @@ reset:
 	docker compose down -v
 	docker compose up -d
 	./scripts/grant-service-account-role.sh
+
+# Run automated Authorization Code + PKCE flow (requires demo credentials)
+app-flow:
+	node scripts/run-auth-code-flow.js
 
 # Stop containers and remove persistent volumes
 clean:
