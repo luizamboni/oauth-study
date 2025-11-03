@@ -8,6 +8,7 @@ REALM=${REALM:-oauth-study}
 PROTECTED_API_URL=${PROTECTED_API_URL:-http://localhost:4000/api/hello}
 CALL_API=${CALL_API:-true}
 MIN_ROLE=${MIN_ROLE:-service.reader}
+MIN_SCOPE=${MIN_SCOPE:-protected-api.read}
 SCOPE=${SCOPE:-}
 
 token_endpoint="${KEYCLOAK_URL}/realms/${REALM}/protocol/openid-connect/token"
@@ -28,6 +29,14 @@ fi
 response=$(curl "${curl_args[@]}")
 
 printf '%s\n' "${response}" | jq .
+
+token_scope=$(jq -r '.scope // empty' <<< "${response}")
+if [[ -n "${MIN_SCOPE}" ]]; then
+  if [[ -z "${token_scope}" || " ${token_scope} " != *" ${MIN_SCOPE} "* ]]; then
+    echo "Warning: token response missing scope '${MIN_SCOPE}'." >&2
+    echo "Requested scopes: '${token_scope:-<none>}'" >&2
+  fi
+fi
 
 access_token=$(jq -r '.access_token // empty' <<< "${response}")
 

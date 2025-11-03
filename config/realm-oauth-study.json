@@ -20,7 +20,7 @@
       "directAccessGrantsEnabled": false,
       "implicitFlowEnabled": false,
       "serviceAccountsEnabled": false,
-      "fullScopeAllowed": true,
+      "fullScopeAllowed": false,
       "attributes": {
         "pv3.skip.refresh.token": "false",
         "oauth2.device.authorization.grant.enabled": "true",
@@ -47,7 +47,9 @@
         "web-origins"
       ],
       "optionalClientScopes": [
-        "service-audit"
+        "service-audit",
+        "protected-api.read",
+        "protected-api.write"
       ]
     },
     {
@@ -83,7 +85,9 @@
         "email",
         "roles",
         "web-origins",
-        "service-audit"
+        "service-audit",
+        "protected-api.read",
+        "protected-api.write"
       ],
       "optionalClientScopes": []
     }
@@ -295,6 +299,28 @@
           }
         }
       ]
+    },
+    {
+      "name": "protected-api.read",
+      "description": "Read access to the sample protected API",
+      "protocol": "openid-connect",
+      "attributes": {
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Allow reading data from the Protected API",
+        "include.in.token.scope": "true"
+      },
+      "protocolMappers": []
+    },
+    {
+      "name": "protected-api.write",
+      "description": "Write access to the sample protected API",
+      "protocol": "openid-connect",
+      "attributes": {
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Allow writing data to the Protected API",
+        "include.in.token.scope": "true"
+      },
+      "protocolMappers": []
     }
   ],
   "users": [
@@ -348,6 +374,14 @@
     ]
   },
   "groups": [],
+  "scopeMappings": [
+    {
+      "client": "public-pkce-client",
+      "roles": [
+        "service.reader"
+      ]
+    }
+  ],
   "defaultDefaultClientScopes": [
     "profile",
     "email",
@@ -356,7 +390,9 @@
   ],
   "defaultOptionalClientScopes": [
     "offline_access",
-    "service-audit"
+    "service-audit",
+    "protected-api.read",
+    "protected-api.write"
   ],
   "defaultRoles": [
     "offline_access",

@@ -58,7 +58,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 | Key grant types | - `standardFlowEnabled: true`<br>- PKCE S256 enforced via `pkce.code.challenge.method` | - `serviceAccountsEnabled: true`<br>- Auth code, implicit, password grants all disabled |
 | Credentials | - No client secret<br>- Relies on PKCE + redirect URIs | - Requires `confidential-cli-secret`<br>- Authenticate with Basic/POST body |
 | Redirect URIs & web origins | - `http://127.0.0.1:3000/*`<br>- `http://localhost:3000/*`<br>- `http://127.0.0.1:8000/callback`<br>- `http://localhost:8000/callback`<br>- Web origins scoped to port 3000 | - Not browser-based<br>- No redirect URIs needed |
-| Scope behaviour | - Default scopes: `profile`, `email`, `roles`, `web-origins`<br>- Optional: `service-audit`<br>- `fullScopeAllowed: true` | - Default scopes mirror public client plus `service-audit`<br>- Optional: *(none)*<br>- `fullScopeAllowed: false` to demand explicit assignment |
+| Scope behaviour | - Default scopes: `profile`, `email`, `roles`, `web-origins`<br>- Optional: `service-audit`, `protected-api.read`, `protected-api.write` (shown as consent checkboxes)<br>- `fullScopeAllowed: false` | - Default scopes mirror public client plus `service-audit`, `protected-api.read`, `protected-api.write` so service tokens always include them<br>- Optional: *(none)*<br>- `fullScopeAllowed: false` to demand explicit assignment |
 | Protocol mappers | - Uses Keycloak defaults<br>- Claims driven by scopes | - Adds realm-role mapper<br>- Ensures `roles` claim in tokens |
 
 ## Try OAuth Flows
@@ -78,11 +78,11 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
    - Redirect URI: `http://localhost:8000/callback` (must match exactly)
    - PKCE method: `S256`
 4. When prompted, sign in with user `demo` / `demo`.
-5. Keycloak now shows a consent screen listing `profile`, `email`, `roles`, `web-origins`, and the optional `service-audit` scope. Review the requested access and click **Accept** to continue.
+5. Keycloak now shows a consent screen listing `profile`, `email`, `roles`, `web-origins`, and the optional `service-audit`, `protected-api.read`, and `protected-api.write` scopes. The sample app requests all of them, so you will see one checkbox per optional scope—untick `protected-api.read` (or `.write`) if you want to deny that capability.
    - Need a fresh user? Click **Register** on the Keycloak login screen—self-service sign-up is enabled and skips email verification in this local setup.
 6. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.  
    The home screen automatically calls the protected API with your access token and shows the response.
-7. The sample app requests the optional `service-audit` scope (via `AUTH_SCOPE`), so decoded tokens include an `audit_roles` claim alongside the standard `roles` list.
+7. The sample app requests `service-audit`, `protected-api.read`, and `protected-api.write` (via `AUTH_SCOPE`), so decoded tokens include the `audit_roles` claim and whatever scopes you leave selected on the consent dialog.
 
 > ℹ️ Want to see the consent dialog again? Visit `make login`, open **Applications** in the Keycloak account console, and revoke access for “Public PKCE Client”. The next Authorization Code flow will re-prompt for the same scopes.
 
@@ -92,7 +92,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 </p>
 
 Use `make token` to request a service account token with the `confidential-cli` client.  
-After printing the token response (note the `audit_roles` claim that comes from the default `service-audit` scope), the script immediately calls the protected API and outputs the JSON payload (set `CALL_API=false` to skip the call). Provide a custom scope list by exporting `SCOPE="scope1 scope2"` before invoking the task.
+After printing the token response (note the `scope` string now includes `protected-api.read protected-api.write` alongside `service-audit` and the `audit_roles` claim), the script immediately calls the protected API and outputs the JSON payload (set `CALL_API=false` to skip the call). Provide a custom scope list by exporting `SCOPE="scope1 scope2"` before invoking the task.
 
 ### Password Grant (Optional)
 Direct Access Grants are disabled by default for security. You can enable them on a client by editing the client configuration in the admin console.
@@ -108,16 +108,20 @@ The `api/` directory exposes an Express API that validates Bearer tokens issued 
    - `make api-run`
    The server listens on http://localhost:4000 and exposes:
    - `GET /healthz` — unauthenticated health check
-   - `GET /api/hello` — requires a valid access token and (by default) the `service.reader` role
-   - `POST /api/metrics` — requires the `service.writer` role (provided to new users by default)
+   - `GET /api/hello` — requires a valid access token, the `service.reader` role, and the `protected-api.read` scope
+   - `POST /api/metrics` — requires the `service.writer` role and the `protected-api.write` scope (both granted to new users and the CLI service account)
 3. Hit the protected route:
    - Authorization Code flow: tokens retrieved via the sample app automatically trigger a call, and results appear on the home page.
    - Client Credentials flow: `make token` prints both the token response and the protected API output.
    - Manual checks:
      - `TOKEN=<ACCESS_TOKEN> make api-call` for the reader endpoint
-     - `TOKEN=<ACCESS_TOKEN> make api-call-writer` for the writer endpoint
+     - `TOKEN=<ACCESS_TOKEN> make api-call-writer` for the writer endpoint (ensure the token carries `protected-api.write` in its scope list)
+
+> ℹ️ If the browser client skips `protected-api.read`, the sample app still logs in but API calls return `403 Missing required scope: protected-api.read`. Toggle the scope on the consent screen and retry.
 
 > ℹ️ `make reset` tears down the Keycloak/Postgres stack, reloads the realm, and re-applies the `service.reader` role mapping to the `confidential-cli` service account so client-credential calls stay authorized.
+
+> ℹ️ Need to adjust which resource scopes the browser client can request? Re-run the Authorization Code flow and pick the `protected-api.read` / `protected-api.write` checkboxes on the consent screen. You can revoke access from the Keycloak account console to start over.
 
 > ℹ️ New self-registered users now inherit the `service.reader` and `service.writer` roles by default. If you already created accounts before this change, assign the roles manually or run `make reset` and re-create them.
 

@@ -15,7 +15,7 @@ const {
   CLIENT_ID = 'public-pkce-client',
   REDIRECT_URI = 'http://localhost:3000/callback',
   PROTECTED_API_URL = 'http://localhost:4000/api/hello',
-  AUTH_SCOPE = 'openid profile email service-audit'
+  AUTH_SCOPE = 'openid profile email service-audit protected-api.read protected-api.write'
 } = process.env;
 
 if (SESSION_SECRET === 'change-me') {
