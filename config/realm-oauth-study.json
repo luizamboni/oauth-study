@@ -143,6 +143,7 @@
   "groups": [],
   "defaultRoles": [
     "offline_access",
-    "uma_authorization"
+    "uma_authorization",
+    "service.reader"
   ]
 }

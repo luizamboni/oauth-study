@@ -111,4 +111,6 @@ The `api/` directory exposes an Express API that validates Bearer tokens issued 
 
 > ℹ️ `make reset` tears down the Keycloak/Postgres stack, reloads the realm, and re-applies the `service.reader` role mapping to the `confidential-cli` service account so client-credential calls stay authorized.
 
+> ℹ️ New self-registered users now inherit the `service.reader` role by default. If you already created accounts before this change, assign the role manually or run `make reset` and re-create them.
+
 > ℹ️ The `demo` user has the `service.reader` realm role pre-assigned. If you prefer to call the API with the `confidential-cli` service account instead, grant that role to the client’s service account in Keycloak or relax `REQUIRED_ROLE` in `api/.env`.
