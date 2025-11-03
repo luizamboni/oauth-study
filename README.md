@@ -26,13 +26,13 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 ### Using the Authorization Code + PKCE Flow
 
 <p align="center">
-  <img src="docs/sequence-diagram-auth-code.svg" alt="Authorization Code + PKCE Flow" width="70%">
+  <img src="docs/sequence-diagram-auth-code.svg" alt="Authorization Code + PKCE Flow" width="90%">
 </p>
 
 ### Using the Client Credentials Flow
 
 <p align="center">
-  <img src="docs/sequence-diagram-client-credentials.svg" alt="Client Credentials Flow" width="70%">
+  <img src="docs/sequence-diagram-client-credentials.svg" alt="Client Credentials Flow" width="90%">
 </p>
 
 ### Makefile Shortcuts
