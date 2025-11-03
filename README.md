@@ -34,12 +34,13 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 - `make clean` — stop containers and remove volumes
 
 ## Sample Realm Contents
-- **Realm:** `oauth-study`
-- **User:** `demo` / `demo`
-- **Clients:**
-  - `public-pkce-client` (public, Authorization Code + PKCE, redirect URIs `http://localhost:3000/*`, `http://localhost:8000/callback`)
-  - `confidential-cli` (confidential, Client Credentials, secret `confidential-cli-secret`)
-- **Realm Roles:** `service.reader`, `service.writer`
+
+| Item | Details |
+| --- | --- |
+| Realm | `oauth-study` |
+| Demo user | Username `demo` / Password `demo` |
+| Clients | - `public-pkce-client` — public client, Authorization Code + PKCE, redirect URIs `http://localhost:3000/*`, `http://localhost:8000/callback`<br>- `confidential-cli` — confidential client, Client Credentials, secret `confidential-cli-secret` |
+| Realm roles | `service.reader`, `service.writer` |
 
 | Property | `public-pkce-client` | `confidential-cli` |
 | --- | --- | --- |
