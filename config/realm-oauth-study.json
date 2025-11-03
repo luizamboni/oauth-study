@@ -108,6 +108,17 @@
           "temporary": false
         }
       ]
+    },
+    {
+      "username": "service-account-confidential-cli",
+      "enabled": true,
+      "emailVerified": false,
+      "serviceAccountClientId": "confidential-cli",
+      "realmRoles": [
+        "service.reader"
+      ],
+      "requiredActions": [],
+      "credentials": []
     }
   ],
   "roles": {
