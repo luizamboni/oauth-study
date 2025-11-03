@@ -43,12 +43,12 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 
 | Property | `public-pkce-client` | `confidential-cli` |
 | --- | --- | --- |
-| Client type | Public SPA/native-style client using Authorization Code + PKCE | Confidential client (CLI/service) using Client Credentials |
-| Key grant types | `standardFlowEnabled: true`; PKCE enforced via `pkce.code.challenge.method: S256` | `serviceAccountsEnabled: true`; other flows disabled (`standardFlowEnabled`, `implicitFlowEnabled`, `directAccessGrantsEnabled` all `false`) |
-| Credentials | No client secret required | Secret `confidential-cli-secret` |
-| Redirect URIs & web origins | `http://127.0.0.1:3000/*`, `http://localhost:3000/*`, `http://127.0.0.1:8000/callback`, `http://localhost:8000/callback`; origins set for port 3000 | None (non-browser client) |
-| Scope behaviour | Default scopes `profile`, `email`, `roles`, `web-origins`; optional `address`, `phone`; `fullScopeAllowed: true` | Same default/optional scopes but `fullScopeAllowed: false` to require explicit role assignment |
-| Protocol mappers | Relies on Keycloak defaults | Custom realm-role mapper ensures tokens expose `roles` claim |
+| Client type | - Public OAuth client<br>- SPA/native-style flow<br>- Authorization Code + PKCE | - Confidential OAuth client<br>- CLI/service-to-service<br>- Client Credentials grant |
+| Key grant types | - `standardFlowEnabled: true`<br>- PKCE S256 enforced via `pkce.code.challenge.method` | - `serviceAccountsEnabled: true`<br>- Auth code, implicit, password grants all disabled |
+| Credentials | - No client secret<br>- Relies on PKCE + redirect URIs | - Requires `confidential-cli-secret`<br>- Authenticate with Basic/POST body |
+| Redirect URIs & web origins | - `http://127.0.0.1:3000/*`<br>- `http://localhost:3000/*`<br>- `http://127.0.0.1:8000/callback`<br>- `http://localhost:8000/callback`<br>- Web origins scoped to port 3000 | - Not browser-based<br>- No redirect URIs needed |
+| Scope behaviour | - Default scopes: `profile`, `email`, `roles`, `web-origins`<br>- Optional: `address`, `phone`<br>- `fullScopeAllowed: true` | - Default scopes mirror public client<br>- Optional scopes identical<br>- `fullScopeAllowed: false` to demand explicit assignment |
+| Protocol mappers | - Uses Keycloak defaults<br>- Claims driven by scopes | - Adds realm-role mapper<br>- Ensures `roles` claim in tokens |
 
 ## Try OAuth Flows
 
@@ -81,4 +81,3 @@ The script POSTs to the token endpoint and pretty-prints the JSON response. You 
 
 ### Password Grant (Optional)
 Direct Access Grants are disabled by default for security. You can enable them on a client by editing the client configuration in the admin console.
-
