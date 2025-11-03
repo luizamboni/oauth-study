@@ -2,12 +2,8 @@
 
 Local playground for experimenting with OAuth 2.0 and OpenID Connect using [Keycloak](https://www.keycloak.org/) running in Docker.
 
-<p align="center">
-  <img src="docs/sequence-diagram-auth-code.svg" alt="Authorization Code + PKCE Flow" width="70%">
-</p>
-<p align="center">
-  <img src="docs/sequence-diagram-client-credentials.svg" alt="Client Credentials Flow" width="70%">
-</p>
+
+
 
 ## Prerequisites
 - Docker Engine 24+
@@ -17,24 +13,27 @@ Local playground for experimenting with OAuth 2.0 and OpenID Connect using [Keyc
 ## Getting Started
 1. Boot the stack:
    ```bash
-   docker compose up -d
-   ```
-2. Verify Keycloak is healthy:
-   ```bash
-   docker compose logs -f keycloak
+   make up
    ```
    Wait until you see `Keycloak 24.0` and `Listening on: http://0.0.0.0:8080`.
-3. Open http://localhost:8080 in your browser and sign in to the admin console with:
+
+2. Open http://localhost:8080 in your browser and sign in to the admin console with:
    - Username: `admin`
    - Password: `admin`
 
 The realm `oauth-study` is auto-imported with example clients, roles, and a demo user.
 
-### Services
-- `postgres` — stores Keycloak data
-- `keycloak` — identity provider
+### Using the Authorization Code + PKCE Flow
 
-Both services are defined in `docker-compose.yml`.
+<p align="center">
+  <img src="docs/sequence-diagram-auth-code.svg" alt="Authorization Code + PKCE Flow" width="70%">
+</p>
+
+### Using the Client Credentials Flow
+
+<p align="center">
+  <img src="docs/sequence-diagram-client-credentials.svg" alt="Client Credentials Flow" width="70%">
+</p>
 
 ### Makefile Shortcuts
 - `make up` — start the stack
