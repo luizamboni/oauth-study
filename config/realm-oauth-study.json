@@ -1,7 +1,8 @@
 {
   "realm": "oauth-study",
   "enabled": true,
-  "registrationAllowed": false,
+  "registrationAllowed": true,
+  "verifyEmail": false,
   "loginWithEmailAllowed": true,
   "internationalizationEnabled": false,
   "resetPasswordAllowed": true,

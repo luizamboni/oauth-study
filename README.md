@@ -76,6 +76,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
    - Redirect URI: `http://localhost:8000/callback` (must match exactly)
    - PKCE method: `S256`
 4. When prompted, sign in with user `demo` / `demo`.
+   - Need a fresh user? Click **Register** on the Keycloak login screen—self-service sign-up is enabled and skips email verification in this local setup.
 5. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.  
    The home screen automatically calls the protected API with your access token and shows the response.
 
