@@ -24,8 +24,11 @@ access_token=$(jq -r '.access_token // empty' <<< "${response}")
 if [[ -n "${access_token}" && "${CALL_API}" == "true" ]]; then
   echo
   echo "Calling ${PROTECTED_API_URL}"
-  api_response=$(curl -s \
+  if api_response=$(curl -s \
     -H "Authorization: Bearer ${access_token}" \
-    "${PROTECTED_API_URL}")
-  printf '%s\n' "${api_response}" | jq .
+    "${PROTECTED_API_URL}"); then
+    printf '%s\n' "${api_response}" | jq .
+  else
+    echo "Unable to reach ${PROTECTED_API_URL}. Is the protected API running?" >&2
+  fi
 fi
