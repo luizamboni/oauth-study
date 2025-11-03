@@ -1,4 +1,4 @@
-.PHONY: up down restart logs token clean app-run app-install api-install api-run
+.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call
 
 # Start Keycloak playground in detached mode
 up:
@@ -35,6 +35,15 @@ api-install:
 # Run protected API on localhost:4000
 api-run:
 	cd api && npm run dev
+
+# Prepare protected API environment file
+api-env:
+	test -f api/.env || cp api/.env.example api/.env
+
+# Call protected API (requires TOKEN env var)
+api-call:
+	@test -n "$(TOKEN)" || (echo "Usage: TOKEN=... make api-call" && exit 1)
+	curl -s -H "Authorization: Bearer $(TOKEN)" http://localhost:4000/api/hello | jq
 
 # Stop containers and remove persistent volumes
 clean:

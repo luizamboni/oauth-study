@@ -31,7 +31,9 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 - `make app-install` — install the sample app dependencies
 - `make app-run` — run the sample app on port 3000
 - `make api-install` — install the protected API dependencies
+- `make api-env` — create `api/.env` from the example file
 - `make api-run` — run the protected API on port 4000
+- `make api-call` — call the protected API with a Bearer token
 - `make down` — stop containers
 - `make clean` — stop containers and remove volumes
 
@@ -74,10 +76,8 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
    - PKCE method: `S256`
 4. When prompted, sign in with user `demo` / `demo`.
 5. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.
-6. Copy the access token and call the protected API:
-   ```bash
-   curl -H "Authorization: Bearer <ACCESS_TOKEN>" http://localhost:4000/api/hello
-   ```
+6. Copy the access token and invoke the protected API:
+   - `TOKEN=<ACCESS_TOKEN> make api-call`
 
 ### Client Credentials (Confidential Client)
 <p align="center">
@@ -97,23 +97,16 @@ Direct Access Grants are disabled by default for security. You can enable them o
 The `api/` directory exposes an Express API that validates Bearer tokens issued by Keycloak.
 
 1. Install dependencies and copy the environment template:
-   ```bash
-   make api-install
-   cp api/.env.example api/.env
-   # edit api/.env as needed (e.g., REQUIRED_ROLE)
-   ```
+   - `make api-install`
+   - `make api-env`
+   - edit `api/.env` (update `REQUIRED_ROLE`, `AUDIENCE`, etc.)
 2. Start the API:
-   ```bash
-   make api-run
-   ```
+   - `make api-run`
    The server listens on http://localhost:4000 and exposes:
    - `GET /healthz` — unauthenticated health check
    - `GET /api/hello` — requires a valid access token and (by default) the `service.reader` role
 3. Hit the protected route with a token obtained via the Authorization Code flow:
-   ```bash
-   TOKEN=<paste_access_token>
-   curl -s -H "Authorization: Bearer ${TOKEN}" http://localhost:4000/api/hello | jq
-   ```
+   - `TOKEN=<ACCESS_TOKEN> make api-call`
    The response echoes the subject, roles, and token timestamps, proving the request passed validation.
 
 > ℹ️ The `demo` user has the `service.reader` realm role pre-assigned. If you prefer to call the API with the `confidential-cli` service account instead, grant that role to the client’s service account in Keycloak or relax `REQUIRED_ROLE` in `api/.env`.
