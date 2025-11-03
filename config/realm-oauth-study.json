@@ -1,0 +1,135 @@
+{
+  "realm": "oauth-study",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "internationalizationEnabled": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "sslRequired": "external",
+  "clients": [
+    {
+      "clientId": "public-pkce-client",
+      "name": "Public PKCE Client",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": true,
+      "attributes": {
+        "pv3.skip.refresh.token": "false",
+        "oauth2.device.authorization.grant.enabled": "true",
+        "saml.assertion.signature": "false",
+        "saml.server.signature": "false",
+        "saml.client.signature": "false",
+        "saml.encrypt": "false",
+        "pkce.code.challenge.method": "S256"
+      },
+      "redirectUris": [
+        "http://127.0.0.1:3000/*",
+        "http://localhost:3000/*",
+        "http://127.0.0.1:8000/callback",
+        "http://localhost:8000/callback"
+      ],
+      "webOrigins": [
+        "http://127.0.0.1:3000",
+        "http://localhost:3000"
+      ],
+      "defaultClientScopes": [
+        "profile",
+        "email",
+        "roles",
+        "web-origins"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone"
+      ]
+    },
+    {
+      "clientId": "confidential-cli",
+      "name": "Confidential CLI",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "confidential-cli-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": true,
+      "fullScopeAllowed": false,
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "roles",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "profile",
+        "email",
+        "roles",
+        "web-origins"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "demo",
+      "email": "demo@example.com",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "User",
+      "realmRoles": [
+        "offline_access"
+      ],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "service.reader",
+        "description": "Read access to backend service APIs",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "oauth-study"
+      },
+      {
+        "name": "service.writer",
+        "description": "Write access to backend service APIs",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "oauth-study"
+      }
+    ]
+  },
+  "groups": [],
+  "defaultRoles": [
+    "offline_access",
+    "uma_authorization"
+  ]
+}

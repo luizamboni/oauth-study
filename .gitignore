@@ -1,0 +1,5 @@
+# Node.js dependencies
+app/node_modules/
+
+# Local environment files
+app/.env
