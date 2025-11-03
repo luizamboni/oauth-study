@@ -98,7 +98,8 @@
       "firstName": "Demo",
       "lastName": "User",
       "realmRoles": [
-        "offline_access"
+        "offline_access",
+        "service.reader"
       ],
       "credentials": [
         {

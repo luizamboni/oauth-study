@@ -1,0 +1,17 @@
+{
+  "name": "protected-api",
+  "version": "1.0.0",
+  "description": "Protected resource for the OAuth study environment",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.4",
+    "express": "^4.19.2",
+    "jose": "^5.2.1"
+  }
+}

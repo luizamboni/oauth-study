@@ -1,4 +1,4 @@
-.PHONY: up down restart logs token clean app-run app-install
+.PHONY: up down restart logs token clean app-run app-install api-install api-run
 
 # Start Keycloak playground in detached mode
 up:
@@ -27,6 +27,14 @@ app-install:
 # Run sample OAuth client on localhost:3000
 app-run:
 	cd app && npm run dev
+
+# Install protected API dependencies
+api-install:
+	cd api && npm install
+
+# Run protected API on localhost:4000
+api-run:
+	cd api && npm run dev
 
 # Stop containers and remove persistent volumes
 clean:
