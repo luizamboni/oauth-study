@@ -24,11 +24,11 @@
   <rect class="actor" x="80" y="80" width="160" height="44" rx="6"/>
   <text class="label" x="160" y="108" text-anchor="middle">End User</text>
 
-  <rect class="actor" x="300" y="80" width="180" height="44" rx="6"/>
-  <text class="label" x="390" y="108" text-anchor="middle">Browser</text>
+  <rect class="actor" x="280" y="80" width="220" height="44" rx="6"/>
+  <text class="label" x="390" y="108" text-anchor="middle">Front-end (Browser)</text>
 
-  <rect class="actor" x="540" y="80" width="240" height="44" rx="6"/>
-  <text class="label" x="660" y="108" text-anchor="middle">OAuth Client (localhost:3000)</text>
+  <rect class="actor" x="520" y="80" width="280" height="44" rx="6"/>
+  <text class="label" x="660" y="108" text-anchor="middle">Backend (OAuth Client)</text>
 
   <rect class="actor" x="820" y="80" width="210" height="44" rx="6"/>
   <text class="label" x="925" y="108" text-anchor="middle">Keycloak</text>
@@ -47,10 +47,10 @@
   <text class="step" x="275" y="140">1. Click "Start Authorization Code + PKCE"</text>
   <path class="arrow" d="M160 160 L390 160"/>
 
-  <text class="step" x="525" y="190">2. Browser requests /login</text>
+  <text class="step" x="525" y="190">2. Front-end requests /login</text>
   <path class="arrow" d="M390 200 L660 200"/>
 
-  <text class="step" x="660" y="240">3. Client generates code verifier, challenge, and state</text>
+  <text class="step" x="660" y="240">3. Backend generates code verifier, challenge, and state</text>
 
   <text class="step" x="790" y="280">4. Redirect browser to Keycloak authorization endpoint</text>
   <path class="arrow" d="M660 280 L925 280"/>
@@ -61,13 +61,13 @@
   <text class="step" x="790" y="340">6. Keycloak redirects back with authorization code</text>
   <path class="arrow-return" d="M925 340 L660 340"/>
 
-  <text class="step" x="790" y="360">7. Client exchanges code + PKCE verifier for tokens</text>
+  <text class="step" x="790" y="360">7. Backend exchanges code + PKCE verifier for tokens</text>
   <path class="arrow" d="M660 360 L925 360"/>
   <path class="arrow-return" d="M925 370 L660 370"/>
 
-  <text class="step" x="660" y="390">8. Client stores tokens and updates session</text>
+  <text class="step" x="660" y="390">8. Backend stores tokens and updates session</text>
 
-  <text class="step" x="850" y="410">9. Client calls Protected API with Bearer token</text>
+  <text class="step" x="850" y="410">9. Backend calls Protected API with Bearer token</text>
   <path class="arrow" d="M660 400 L1180 400"/>
 
   <text class="step" x="980" y="440">10. API validates token with Keycloak</text>
