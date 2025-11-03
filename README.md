@@ -90,16 +90,6 @@ KEYCLOAK_URL=http://localhost:8080 \
 ### Password Grant (Optional)
 Direct Access Grants are disabled by default for security. You can enable them on a client by editing the client configuration in the admin console.
 
-## Tear Down
-Stop the environment while preserving the Postgres volume:
-```bash
-docker compose down
-```
-Remove persistent data as well:
-```bash
-docker compose down -v
-```
-
 ## Troubleshooting
 - **Keycloak fails to connect to Postgres:** ensure the `postgres` container is running and healthy (`docker compose ps`).
 - **Cannot log in to admin console:** wait for the server to finish booting; initial migrations can take ~30 seconds.
