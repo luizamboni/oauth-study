@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="440" viewBox="0 0 1240 440">
-  <rect width="1240" height="440" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="480" viewBox="0 0 1280 480">
+  <rect width="1280" height="480" fill="#ffffff"/>
   <style>
     .actor { fill: #f0f4f8; stroke: #1f3a5f; stroke-width: 1.5; }
     .lifeline { stroke: #7b8ba4; stroke-dasharray: 6 6; stroke-width: 1.2; }
@@ -18,62 +18,62 @@
     </marker>
   </defs>
 
-  <text x="620" y="34" text-anchor="middle" class="title label">Authorization Code Grant with PKCE</text>
+  <text x="640" y="40" text-anchor="middle" class="title label">Authorization Code Grant with PKCE</text>
 
   <!-- Actors -->
-  <rect class="actor" x="40" y="60" width="160" height="44" rx="6"/>
-  <text class="label" x="120" y="88" text-anchor="middle">End User</text>
+  <rect class="actor" x="80" y="80" width="160" height="44" rx="6"/>
+  <text class="label" x="160" y="108" text-anchor="middle">End User</text>
 
-  <rect class="actor" x="230" y="60" width="170" height="44" rx="6"/>
-  <text class="label" x="315" y="88" text-anchor="middle">Browser</text>
+  <rect class="actor" x="300" y="80" width="180" height="44" rx="6"/>
+  <text class="label" x="390" y="108" text-anchor="middle">Browser</text>
 
-  <rect class="actor" x="420" y="60" width="220" height="44" rx="6"/>
-  <text class="label" x="530" y="88" text-anchor="middle">OAuth Client (localhost:3000)</text>
+  <rect class="actor" x="540" y="80" width="240" height="44" rx="6"/>
+  <text class="label" x="660" y="108" text-anchor="middle">OAuth Client (localhost:3000)</text>
 
-  <rect class="actor" x="690" y="60" width="200" height="44" rx="6"/>
-  <text class="label" x="790" y="88" text-anchor="middle">Keycloak</text>
+  <rect class="actor" x="820" y="80" width="210" height="44" rx="6"/>
+  <text class="label" x="925" y="108" text-anchor="middle">Keycloak</text>
 
-  <rect class="actor" x="950" y="60" width="200" height="44" rx="6"/>
-  <text class="label" x="1050" y="88" text-anchor="middle">Protected API</text>
+  <rect class="actor" x="1090" y="80" width="180" height="44" rx="6"/>
+  <text class="label" x="1180" y="108" text-anchor="middle">Protected API</text>
 
   <!-- Lifelines -->
-  <line class="lifeline" x1="120" y1="104" x2="120" y2="400"/>
-  <line class="lifeline" x1="315" y1="104" x2="315" y2="400"/>
-  <line class="lifeline" x1="530" y1="104" x2="530" y2="400"/>
-  <line class="lifeline" x1="790" y1="104" x2="790" y2="400"/>
-  <line class="lifeline" x1="1050" y1="104" x2="1050" y2="400"/>
+  <line class="lifeline" x1="160" y1="124" x2="160" y2="440"/>
+  <line class="lifeline" x1="390" y1="124" x2="390" y2="440"/>
+  <line class="lifeline" x1="660" y1="124" x2="660" y2="440"/>
+  <line class="lifeline" x1="925" y1="124" x2="925" y2="440"/>
+  <line class="lifeline" x1="1180" y1="124" x2="1180" y2="440"/>
 
   <!-- Steps -->
-  <text class="step" x="215" y="140">1. Click "Start Authorization Code + PKCE"</text>
-  <path class="arrow" d="M120 150 C160 150, 220 150, 305 150"/>
+  <text class="step" x="275" y="140">1. Click "Start Authorization Code + PKCE"</text>
+  <path class="arrow" d="M160 160 L390 160"/>
 
-  <text class="step" x="425" y="190">2. Browser requests /login</text>
-  <path class="arrow" d="M315 200 C360 200, 430 200, 520 200"/>
+  <text class="step" x="525" y="190">2. Browser requests /login</text>
+  <path class="arrow" d="M390 200 L660 200"/>
 
-  <text class="step" x="530" y="230">3. Generate code verifier, challenge, state</text>
+  <text class="step" x="660" y="240">3. Client generates code verifier, challenge, and state</text>
 
-  <text class="step" x="660" y="260">4. Redirect to Keycloak authorization endpoint</text>
-  <path class="arrow" d="M530 270 C620 270, 700 270, 780 270"/>
+  <text class="step" x="790" y="280">4. Redirect browser to Keycloak authorization endpoint</text>
+  <path class="arrow" d="M660 280 L925 280"/>
 
-  <text class="step" x="790" y="300">5. User authenticates with Keycloak</text>
-  <path class="arrow" d="M790 310 C700 310, 620 310, 315 310"/>
+  <text class="step" x="640" y="320">5. User authenticates on Keycloak</text>
+  <path class="arrow" d="M925 320 L390 320"/>
 
-  <text class="step" x="660" y="330">6. Keycloak redirects back with authorization code</text>
-  <path class="arrow-return" d="M780 340 C700 340, 620 340, 530 340"/>
+  <text class="step" x="790" y="340">6. Keycloak redirects back with authorization code</text>
+  <path class="arrow-return" d="M925 340 L660 340"/>
 
-  <text class="step" x="610" y="360">7. Client exchanges code + PKCE verifier for tokens</text>
-  <path class="arrow" d="M530 350 C620 350, 700 350, 780 350"/>
-  <path class="arrow-return" d="M780 360 C700 360, 620 360, 530 360"/>
+  <text class="step" x="790" y="360">7. Client exchanges code + PKCE verifier for tokens</text>
+  <path class="arrow" d="M660 360 L925 360"/>
+  <path class="arrow-return" d="M925 370 L660 370"/>
 
-  <text class="step" x="660" y="370">8. Client stores tokens and updates session</text>
+  <text class="step" x="660" y="390">8. Client stores tokens and updates session</text>
 
-  <text class="step" x="820" y="400">9. Client calls Protected API with Bearer token</text>
-  <path class="arrow" d="M530 390 C660 390, 860 390, 1040 390"/>
+  <text class="step" x="850" y="410">9. Client calls Protected API with Bearer token</text>
+  <path class="arrow" d="M660 400 L1180 400"/>
 
-  <text class="step" x="920" y="430">10. API validates token with Keycloak</text>
-  <path class="arrow" d="M1050 410 C980 410, 880 410, 800 410"/>
-  <path class="arrow-return" d="M790 420 C870 420, 970 420, 1050 420"/>
+  <text class="step" x="980" y="440">10. API validates token with Keycloak</text>
+  <path class="arrow" d="M1180 430 L925 430"/>
+  <path class="arrow-return" d="M925 440 L1180 440"/>
 
-  <text class="step" x="820" y="440">11. API returns secured response</text>
-  <path class="arrow-return" d="M1050 430 C860 430, 660 430, 530 430"/>
+  <text class="step" x="850" y="460">11. API returns secured response to client</text>
+  <path class="arrow-return" d="M1180 450 L660 450"/>
 </svg>
