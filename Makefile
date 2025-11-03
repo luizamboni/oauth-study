@@ -1,4 +1,4 @@
-.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call reset
+.PHONY: up down restart logs token clean app-run app-install api-install api-run api-env api-call reset login
 
 # Start Keycloak playground in detached mode
 up:
@@ -50,6 +50,10 @@ reset:
 	docker compose down -v
 	docker compose up -d
 	./scripts/grant-service-account-role.sh
+
+# Open realm login page in default browser
+login:
+	python -m webbrowser "http://localhost:8080/realms/oauth-study/account"
 
 # Stop containers and remove persistent volumes
 clean:

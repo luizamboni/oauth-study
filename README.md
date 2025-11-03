@@ -35,6 +35,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 - `make api-run` — run the protected API on port 4000
 - `make api-call` — call the protected API with a Bearer token
 - `make reset` — tear down Keycloak/Postgres volumes, restart, and reapply service-account roles
+- `make login` — open the Keycloak login page for the `oauth-study` realm in your browser
 - `make down` — stop containers
 - `make clean` — stop containers and remove volumes
 
