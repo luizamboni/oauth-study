@@ -14,7 +14,8 @@ const {
   REALM = 'oauth-study',
   CLIENT_ID = 'public-pkce-client',
   REDIRECT_URI = 'http://localhost:3000/callback',
-  PROTECTED_API_URL = 'http://localhost:4000/api/hello'
+  PROTECTED_API_URL = 'http://localhost:4000/api/hello',
+  AUTH_SCOPE = 'openid profile email service-audit'
 } = process.env;
 
 if (SESSION_SECRET === 'change-me') {
@@ -100,7 +101,7 @@ app.get('/login', async (req, res, next) => {
     req.session.state = state;
 
     const authorizationUrl = client.authorizationUrl({
-      scope: 'openid profile email',
+      scope: AUTH_SCOPE,
       redirect_uri: REDIRECT_URI,
       code_challenge: codeChallenge,
       code_challenge_method: 'S256',

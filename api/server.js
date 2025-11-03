@@ -66,6 +66,8 @@ app.get('/api/hello', authenticateToken(), (req, res) => {
     message: 'Hello from the protected API!',
     subject: payload.sub,
     roles,
+    audit_roles: payload.audit_roles || [],
+    scope: payload.scope,
     issued_at: payload.iat,
     expires_at: payload.exp
   });
@@ -76,6 +78,7 @@ app.post('/api/metrics', authenticateToken('service.writer'), (req, res) => {
   res.json({
     message: 'Metrics update accepted',
     subject: payload.sub,
+    audit_roles: payload.audit_roles || [],
     accepted_at: Date.now()
   });
 });

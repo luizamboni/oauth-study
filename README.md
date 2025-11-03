@@ -58,7 +58,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 | Key grant types | - `standardFlowEnabled: true`<br>- PKCE S256 enforced via `pkce.code.challenge.method` | - `serviceAccountsEnabled: true`<br>- Auth code, implicit, password grants all disabled |
 | Credentials | - No client secret<br>- Relies on PKCE + redirect URIs | - Requires `confidential-cli-secret`<br>- Authenticate with Basic/POST body |
 | Redirect URIs & web origins | - `http://127.0.0.1:3000/*`<br>- `http://localhost:3000/*`<br>- `http://127.0.0.1:8000/callback`<br>- `http://localhost:8000/callback`<br>- Web origins scoped to port 3000 | - Not browser-based<br>- No redirect URIs needed |
-| Scope behaviour | - Default scopes: `profile`, `email`, `roles`, `web-origins`<br>- Optional: `address`, `phone`<br>- `fullScopeAllowed: true` | - Default scopes mirror public client<br>- Optional scopes identical<br>- `fullScopeAllowed: false` to demand explicit assignment |
+| Scope behaviour | - Default scopes: `profile`, `email`, `roles`, `web-origins`<br>- Optional: `address`, `phone`, `service-audit`<br>- `fullScopeAllowed: true` | - Default scopes mirror public client<br>- Optional: `address`, `phone`, `service-audit`<br>- `fullScopeAllowed: false` to demand explicit assignment |
 | Protocol mappers | - Uses Keycloak defaults<br>- Claims driven by scopes | - Adds realm-role mapper<br>- Ensures `roles` claim in tokens |
 
 ## Try OAuth Flows
@@ -81,6 +81,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
    - Need a fresh user? Click **Register** on the Keycloak login screen—self-service sign-up is enabled and skips email verification in this local setup.
 5. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.  
    The home screen automatically calls the protected API with your access token and shows the response.
+6. The sample app requests the optional `service-audit` scope (via `AUTH_SCOPE`), so decoded tokens include an `audit_roles` claim alongside the standard `roles` list.
 
 ### Client Credentials (Confidential Client)
 <p align="center">
@@ -88,7 +89,7 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
 </p>
 
 Use `make token` to request a service account token with the `confidential-cli` client.  
-After printing the token response, the script immediately calls the protected API and outputs the JSON payload (set `CALL_API=false` to skip the call).
+After printing the token response (including `audit_roles` when the `service-audit` scope is requested), the script immediately calls the protected API and outputs the JSON payload (set `CALL_API=false` to skip the call).
 
 ### Password Grant (Optional)
 Direct Access Grants are disabled by default for security. You can enable them on a client by editing the client configuration in the admin console.

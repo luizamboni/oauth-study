@@ -47,7 +47,8 @@
       ],
       "optionalClientScopes": [
         "address",
-        "phone"
+        "phone",
+        "service-audit"
       ]
     },
     {
@@ -86,7 +87,36 @@
       ],
       "optionalClientScopes": [
         "address",
-        "phone"
+        "phone",
+        "service-audit"
+      ]
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "service-audit",
+      "description": "Expose realm roles under audit claim when requested",
+      "protocol": "openid-connect",
+      "attributes": {
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Allow access to audit metadata",
+        "include.in.token.scope": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "audit roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.name": "audit_roles",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        }
       ]
     }
   ],

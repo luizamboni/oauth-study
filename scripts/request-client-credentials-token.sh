@@ -8,6 +8,7 @@ REALM=${REALM:-oauth-study}
 PROTECTED_API_URL=${PROTECTED_API_URL:-http://localhost:4000/api/hello}
 CALL_API=${CALL_API:-true}
 MIN_ROLE=${MIN_ROLE:-service.reader}
+SCOPE=${SCOPE:-"profile email roles service-audit"}
 
 token_endpoint="${KEYCLOAK_URL}/realms/${REALM}/protocol/openid-connect/token"
 
@@ -17,7 +18,7 @@ response=$(curl -s \
   -d "grant_type=client_credentials" \
   -d "client_id=${CLIENT_ID}" \
   -d "client_secret=${CLIENT_SECRET}" \
-  -d "scope=profile email roles")
+  -d "scope=${SCOPE}")
 
 printf '%s\n' "${response}" | jq .
 
