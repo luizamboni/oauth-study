@@ -47,11 +47,12 @@ function authenticateToken(requiredRole = REQUIRED_ROLE) {
 }
 
 function extractRoles(payload) {
+  const directRoles = Array.isArray(payload.roles) ? payload.roles : [];
   const realmRoles = payload.realm_access?.roles || [];
   const resourceRoles = Object.values(payload.resource_access || {}).flatMap(
     resource => resource.roles || []
   );
-  return [...new Set([...realmRoles, ...resourceRoles])];
+  return [...new Set([...directRoles, ...realmRoles, ...resourceRoles])];
 }
 
 const app = express();
