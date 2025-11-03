@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="480" viewBox="0 0 1280 480">
-  <rect width="1280" height="480" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560">
+  <rect width="1280" height="560" fill="#ffffff"/>
   <style>
     .actor { fill: #f0f4f8; stroke: #1f3a5f; stroke-width: 1.5; }
     .lifeline { stroke: #7b8ba4; stroke-dasharray: 6 6; stroke-width: 1.2; }
