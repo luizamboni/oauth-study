@@ -2,6 +2,7 @@ require('dotenv/config');
 const express = require('express');
 const session = require('express-session');
 const crypto = require('crypto');
+const { fetch } = require('undici');
 const { Issuer, generators } = require('openid-client');
 
 const app = express();
@@ -12,7 +13,8 @@ const {
   KEYCLOAK_URL = 'http://localhost:8080',
   REALM = 'oauth-study',
   CLIENT_ID = 'public-pkce-client',
-  REDIRECT_URI = 'http://localhost:3000/callback'
+  REDIRECT_URI = 'http://localhost:3000/callback',
+  PROTECTED_API_URL = 'http://localhost:4000/api/hello'
 } = process.env;
 
 if (SESSION_SECRET === 'change-me') {
@@ -55,6 +57,7 @@ async function getOidcClient() {
 app.get('/', async (req, res) => {
   if (req.session.tokenSet) {
     const { access_token: accessToken, id_token: idToken } = req.session.tokenSet;
+    const apiResult = await callProtectedApi(accessToken);
     res.send(`
       <main>
         <h1>OAuth Study App</h1>
@@ -65,6 +68,8 @@ app.get('/', async (req, res) => {
           <pre>${accessToken ? JSON.stringify(parseJwt(accessToken), null, 2) : 'Unavailable'}</pre>
           <h3>ID Token</h3>
           <pre>${idToken ? JSON.stringify(parseJwt(idToken), null, 2) : 'Unavailable'}</pre>
+          <h3>Protected API Response (${PROTECTED_API_URL})</h3>
+          <pre>${JSON.stringify(apiResult, null, 2)}</pre>
         </section>
         <p><a href="/logout">Log out</a></p>
       </main>
@@ -171,5 +176,29 @@ function parseJwt(token) {
     return JSON.parse(decoded);
   } catch (error) {
     return { error: 'Unable to decode token', details: String(error) };
+  }
+}
+
+async function callProtectedApi(accessToken) {
+  if (!accessToken) {
+    return { error: 'Missing access token' };
+  }
+  try {
+    const response = await fetch(PROTECTED_API_URL, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    const body = await response.json().catch(() => ({}));
+    return {
+      status: response.status,
+      ok: response.ok,
+      body
+    };
+  } catch (error) {
+    return {
+      status: 'error',
+      message: error.message
+    };
   }
 }

@@ -75,20 +75,16 @@ The realm `oauth-study` is auto-imported with example clients, roles, and a demo
    - Redirect URI: `http://localhost:8000/callback` (must match exactly)
    - PKCE method: `S256`
 4. When prompted, sign in with user `demo` / `demo`.
-5. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.
-6. Copy the access token and invoke the protected API:
-   - `TOKEN=<ACCESS_TOKEN> make api-call`
+5. Inspect the returned ID/access tokens in the debugger to understand claims, scopes, and expiry.  
+   The home screen automatically calls the protected API with your access token and shows the response.
 
 ### Client Credentials (Confidential Client)
 <p align="center">
   <img src="docs/sequence-diagram-client-credentials.svg" alt="Client Credentials Flow" width="90%">
 </p>
 
-Use the helper script to request a token using the `confidential-cli` client:
-```bash
-make token
-```
-The script POSTs to the token endpoint and pretty-prints the JSON response. You can supply a different client ID/secret and override the realm or Keycloak URL via environment variables:
+Use `make token` to request a service account token with the `confidential-cli` client.  
+After printing the token response, the script immediately calls the protected API and outputs the JSON payload (set `CALL_API=false` to skip the call).
 
 ### Password Grant (Optional)
 Direct Access Grants are disabled by default for security. You can enable them on a client by editing the client configuration in the admin console.
@@ -105,8 +101,9 @@ The `api/` directory exposes an Express API that validates Bearer tokens issued 
    The server listens on http://localhost:4000 and exposes:
    - `GET /healthz` — unauthenticated health check
    - `GET /api/hello` — requires a valid access token and (by default) the `service.reader` role
-3. Hit the protected route with a token obtained via the Authorization Code flow:
-   - `TOKEN=<ACCESS_TOKEN> make api-call`
-   The response echoes the subject, roles, and token timestamps, proving the request passed validation.
+3. Hit the protected route:
+   - Authorization Code flow: tokens retrieved via the sample app automatically trigger a call, and results appear on the home page.
+   - Client Credentials flow: `make token` prints both the token response and the protected API output.
+   - Manual check: provide a token with `TOKEN=<ACCESS_TOKEN> make api-call`.
 
 > ℹ️ The `demo` user has the `service.reader` realm role pre-assigned. If you prefer to call the API with the `confidential-cli` service account instead, grant that role to the client’s service account in Keycloak or relax `REQUIRED_ROLE` in `api/.env`.
